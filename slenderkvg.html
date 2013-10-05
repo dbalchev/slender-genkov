@@ -11,9 +11,9 @@ http-equiv="Content-Type">
 <script>
     //сложи DEBUG да е false,  нагласи NUM_ROWS и NUM_COLS и направи get_image_name()
 
-var DEBUG = false;
-var NUM_ROWS = 2;
-var NUM_COLS = 2;
+var DEBUG = true;
+var NUM_ROWS = 20;
+var NUM_COLS = 20;
 function get_image_name(x, y) {
     if (x < 0 || x >= NUM_COLS || y < 0 || y >= NUM_ROWS)
         throw "cannot get context ;)";
@@ -27,15 +27,12 @@ function get_image_name(x, y) {
             var x = cell.cellIndex;
             var y = cell.parentNode.rowIndex;
             if (DEBUG) {
-                var blue = (x * 256 / NUM_COLS).toString(16);
-                var green = (y * 256 / NUM_ROWS).toString(16);
-                while(blue.length < 2)
-                    blue = "0" + blue;
-                while(green.length < 2)
-                    green  = "0" + green;
-                var col = "#00" + blue + green;
+                var blue = x * 255/ NUM_COLS;
+                var green = y * 255 / NUM_ROWS;
+                var col = "rgb(0, " + blue.toFixed(0) + 
+                ", " + green.toFixed(0) + ")";
                 THE_TABLE.style.backgroundColor = col;
-
+                console.log(col);
                 cell.style.color = "white";
             }
             else {
