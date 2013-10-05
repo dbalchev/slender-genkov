@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta content="text/html; charset=utf-8"
+http-equiv="Content-Type">
+<meta charset="utf-8">
+<title></title>
+<!--
+
+ НЕ Е ТЕСТВАНО ПОД НИЩО ОСВЕН ЛИСИЦА 
+-->
+<script>
+    //сложи DEBUG да е false,  нагласи NUM_ROWS и NUM_COLS и направи get_image_name()
+
+var DEBUG = false;
+var NUM_ROWS = 2;
+var NUM_COLS = 2;
+function get_image_name(x, y) {
+    if (x < 0 || x >= NUM_COLS || y < 0 || y >= NUM_ROWS)
+        throw "cannot get context ;)";
+    return "bmp-" + x + "-" + y + ".bmp";
+}
+    function init_all() {
+        var THE_TABLE = document.getElementById("the-table");
+
+        var over_handler = function(e) {
+            var cell = e.target;
+            var x = cell.cellIndex;
+            var y = cell.parentNode.rowIndex;
+            if (DEBUG) {
+                var blue = (x * 256 / NUM_COLS).toString(16);
+                var green = (y * 256 / NUM_ROWS).toString(16);
+                while(blue.length < 2)
+                    blue = "0" + blue;
+                while(green.length < 2)
+                    green  = "0" + green;
+                var col = "#00" + blue + green;
+                THE_TABLE.style.backgroundColor = col;
+
+                cell.style.color = "white";
+            }
+            else {
+                var img_name = get_image_name(x ,y);
+                THE_TABLE.style.backgroundImage = "url('" + img_name + "')";
+
+            }
+        }
+        var out_handler = function(e) {
+            var cell = e.target;
+            var x = cell.cellIndex;
+            var y = cell.parentNode.rowIndex;
+            if (DEBUG)
+                cell.style.color = "black";
+        }
+
+        for (var i = 0; i < NUM_ROWS; ++i) {
+            THE_TABLE.insertRow(i);
+            var this_row = THE_TABLE.rows[i];
+            for (var j = 0; j < NUM_COLS; ++j) {
+                this_row.insertCell(j);
+                var this_cell = this_row.cells[j];
+                this_cell.addEventListener("mouseover", over_handler);
+                this_cell.addEventListener("mouseout", out_handler);
+                if (DEBUG)
+                    this_cell.appendChild(document.createTextNode("" + i + ", " + j));
+            }
+        }
+    }
+</script>
+<style type="text/css">
+.fill-all {
+width: 100%;
+height: 100%;
+border-width:"2 solid";
+}
+</style>
+</head>
+<body>    
+<table id="the-table" class="fill-all">
+</table>
+<script>
+    init_all();
+</script>
+</body>
+</html>
+
+
